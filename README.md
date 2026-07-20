@@ -1,12 +1,12 @@
 # Yohak — Furniture Inventory Tracking System
 
-A Laravel 13 web application for tracking furniture inventory — built as a mini-project for
+A Laravel web application for tracking furniture inventory — built as a mini-project for
 [course/internship context]. Employees log in to manage products, record stock movements,
 and generate reports; admins additionally manage the employee roster.
 
 ## Tech Stack
 
-- **Framework:** Laravel 13 (PHP 8.3+)
+- **Framework:** Laravel (PHP)
 - **Database:** SQLite
 - **Frontend:** Blade, Bootstrap 5.3, custom CSS design system (red/orange gradient theme)
 - **Testing:** Pest
