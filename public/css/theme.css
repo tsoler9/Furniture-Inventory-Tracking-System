@@ -1,0 +1,215 @@
+/* ===== Kahoy — Design Tokens ===== */
+:root {
+  --ink: #2B1810;
+  --ember-900: #6E1B12;
+  --rust-700: #9A2B15;
+  --rust-600: #C13B1F;
+  --flame-500: #E85D2C;
+  --amber-400: #F5A245;
+  --gold-300: #FBC978;
+  --linen-50: #FBF3EC;
+  --clay-100: #F3E0D2;
+  --clay-200: #E8CBB3;
+
+  --gradient-ember: linear-gradient(135deg, var(--ember-900) 0%, var(--rust-600) 45%, var(--flame-500) 75%, var(--amber-400) 100%);
+  --gradient-ember-soft: linear-gradient(135deg, var(--rust-600), var(--flame-500));
+
+  --font-display: 'Zilla Slab', serif;
+  --font-body: 'Work Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* Bootstrap variable overrides — keeps every component in the red/orange family */
+  --bs-primary: #E85D2C;
+  --bs-primary-rgb: 232, 93, 44;
+  --bs-secondary: #6E1B12;
+  --bs-secondary-rgb: 110, 27, 18;
+  --bs-success: #A8631E;
+  --bs-success-rgb: 168, 99, 30;
+  --bs-danger: #7A1810;
+  --bs-danger-rgb: 122, 24, 16;
+  --bs-warning: #F5A245;
+  --bs-warning-rgb: 245, 162, 69;
+  --bs-info: #C13B1F;
+  --bs-info-rgb: 193, 59, 31;
+  --bs-light: #FBF3EC;
+  --bs-light-rgb: 251, 243, 236;
+  --bs-dark: #2B1810;
+  --bs-dark-rgb: 43, 24, 16;
+  --bs-body-bg: #FBF3EC;
+  --bs-body-color: #2B1810;
+  --bs-body-font-family: var(--font-body);
+  --bs-border-radius: .625rem;
+  --bs-border-radius-lg: 1rem;
+  --bs-link-color: #C13B1F;
+  --bs-link-hover-color: #9A2B15;
+}
+
+body { font-family: var(--font-body); }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ===== Buttons ===== */
+.btn-primary {
+  background: var(--gradient-ember-soft);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: .01em;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.btn-primary:hover, .btn-primary:focus {
+  background: var(--gradient-ember);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(110, 27, 18, .25);
+  color: #fff;
+}
+.btn-secondary { background: var(--clay-200); border: none; color: var(--ink); }
+.btn-secondary:hover { background: var(--clay-100); color: var(--ink); }
+.btn-warning { background: var(--amber-400); border: none; color: var(--ink); }
+.btn-danger { background: var(--bs-danger); border: none; }
+.btn-outline-danger { color: var(--bs-danger); border-color: var(--bs-danger); }
+.btn-outline-danger:hover { background: var(--bs-danger); border-color: var(--bs-danger); color: #fff; }
+
+/* ===== Cards & tables ===== */
+.card {
+  border: 1px solid var(--clay-200);
+  border-radius: var(--bs-border-radius-lg);
+  box-shadow: 0 4px 14px rgba(110, 27, 18, .06);
+}
+.table thead { background: var(--gradient-ember-soft); }
+.table thead th { color: #fff; font-weight: 600; letter-spacing: .02em; border: none; }
+.table-bordered { border-color: var(--clay-200); }
+.table tbody tr:hover { background: var(--clay-100); }
+
+/* ===== Signature: inventory tag card ===== */
+.card-tag {
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--clay-200);
+  border-radius: .75rem;
+  box-shadow: 0 4px 14px rgba(110, 27, 18, .08);
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+  padding: 1.25rem 1.5rem;
+}
+.card-tag::before {
+  content: '';
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--linen-50);
+  box-shadow: 0 0 0 1.5px var(--rust-600);
+}
+
+/* ===== SKU / reference number treatment ===== */
+.sku-tag {
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  background: var(--clay-100);
+  color: var(--ember-900);
+  padding: .15rem .5rem;
+  border-radius: .35rem;
+  letter-spacing: .02em;
+}
+
+/* ===== Navbar ===== */
+.navbar-brand-gradient { background: var(--gradient-ember); }
+.navbar-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: #fff !important;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.tag-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold-300); display: inline-block; }
+.navbar-nav .nav-link { color: rgba(255, 255, 255, .85) !important; font-weight: 500; }
+.navbar-nav .nav-link:hover, .navbar-nav .nav-link.active { color: #fff !important; }
+
+/* ===== Auth pages ===== */
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-ember);
+  padding: 2rem 1rem;
+}
+.auth-card {
+  background: var(--linen-50);
+  border-radius: 1.25rem;
+  padding: 2.5rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(43, 24, 16, .3);
+}
+.auth-brand { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--ember-900); display: flex; align-items: center; gap: .5rem; margin-bottom: .25rem; }
+.auth-tagline { color: #7a5c4d; font-size: .9rem; margin-bottom: 1.75rem; }
+
+/* ===== Accessibility ===== */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--gold-300);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* ===== Table header fix — readable dark text, proper background ===== */
+.table > thead > tr > th {
+  background-color: var(--clay-100) !important;
+  color: var(--ink) !important;
+  font-weight: 600;
+  letter-spacing: .02em;
+  border-bottom: 2px solid var(--rust-600) !important;
+}
+
+/* ===== Landing page ===== */
+.landing-hero { background: var(--gradient-ember); color: #fff; }
+.landing-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: .08em;
+  color: #fff;
+}
+.landing-headline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  color: #fff;
+  line-height: 1.15;
+}
+.landing-sub { max-width: 560px; color: rgba(255, 255, 255, .9); font-size: 1.05rem; }
+.landing-body { background: var(--linen-50); }
+.landing-feature-icon { font-size: 1.6rem; color: var(--flame-500); }
+.landing-step-number { font-family: var(--font-mono); font-size: 1.5rem; color: var(--flame-500); font-weight: 600; }
+.landing-footer { background: var(--clay-100); color: var(--ink); }
+
+/* ===== Table header fix — readable dark text, proper background ===== */
+.table > thead > tr > th {
+  background-color: var(--clay-100) !important;
+  color: var(--ink) !important;
+  font-weight: 600;
+  letter-spacing: .02em;
+  border-bottom: 2px solid var(--rust-600) !important;
+}
+
+/* ===== Flash alerts — kept in palette (Bootstrap's -subtle vars aren't wired to our overrides) ===== */
+.alert-success {
+  background-color: var(--clay-100);
+  border-color: var(--amber-400);
+  color: var(--ember-900);
+}
+.alert-danger {
+  background-color: #F8E3DE;
+  border-color: var(--bs-danger);
+  color: var(--bs-danger);
+}
