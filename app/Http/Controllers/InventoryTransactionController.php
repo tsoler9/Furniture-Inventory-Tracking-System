@@ -65,12 +65,10 @@ class InventoryTransactionController extends Controller
      */
     private function applyStockChange(InventoryTransaction $transaction, $destroy = false): void
     {
-        $mode = ['addition' => 'increment', 'deduction' => 'decrement'][$transaction->transactionType->mode];
-
-        $quantity = $transaction->quantity;
-
         if ($destroy) {
-            $quantity = $quantity * -1;
+            $mode = ['addition' => 'decrement', 'deduction' => 'increment'][$transaction->transactionType->mode];
+        } else {
+            $mode = ['addition' => 'increment', 'deduction' => 'decrement'][$transaction->transactionType->mode];
         }
 
         $transaction->product->{$mode}('quantity_on_hand', $transaction->quantity);
