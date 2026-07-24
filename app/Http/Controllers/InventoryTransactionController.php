@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InventoryTransactionStoreRequest;
-use App\Models\Employee;
-use App\Models\InventoryTransaction;
-use App\Models\Product;
-use App\Models\TransactionType;
+use App\Models\{Employee, InventoryTransaction, Product, TransactionType};
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -33,10 +30,18 @@ class InventoryTransactionController extends Controller
 
     public function store(InventoryTransactionStoreRequest $request): RedirectResponse
     {
-        DB::transaction(function () use ($request) {
-            $transaction = InventoryTransaction::create($request->validated());
-            $this->applyStockChange($transaction, 1);
-        });
+        try {
+            DB::transaction(function () use ($request) {
+                $transaction = InventoryTransaction::create($request->validated());
+
+                $this->applyStockChange($transaction);
+
+                return true;
+            });
+        } catch (\Throwable $exception) {
+            return back()->with(['error' => $exception->getMessage()])
+                ->withInput();
+        }
 
         return redirect()->route('inventory-transactions.index')->with('success', 'Transaction recorded and stock updated.');
     }
@@ -44,7 +49,7 @@ class InventoryTransactionController extends Controller
     public function destroy(InventoryTransaction $inventoryTransaction): RedirectResponse
     {
         DB::transaction(function () use ($inventoryTransaction) {
-            $this->applyStockChange($inventoryTransaction, -1);
+            $this->applyStockChange($inventoryTransaction, true);
             $inventoryTransaction->delete();
         });
 
@@ -55,17 +60,19 @@ class InventoryTransactionController extends Controller
      * Adjusts product stock based on transaction type.
      * $direction = 1 to apply the change (on create), -1 to reverse it (on delete).
      * Adjustment/Transfer types are intentionally not auto-applied — out of scope for this project.
+     *
+     * @param mixed $destroy
      */
-    private function applyStockChange(InventoryTransaction $transaction, int $direction): void
+    private function applyStockChange(InventoryTransaction $transaction, $destroy = false): void
     {
-        $typeName = $transaction->transactionType->name;
+        $mode = ['addition' => 'increment', 'deduction' => 'decrement'][$transaction->transactionType->mode];
 
-        $delta = match ($typeName) {
-            'Stock In', 'Return' => $transaction->quantity,
-            'Stock Out' => -$transaction->quantity,
-            default => 0,
-        };
+        $quantity = $transaction->quantity;
 
-        $transaction->product()->first()?->increment('quantity_on_hand', $delta * $direction);
+        if ($destroy) {
+            $quantity = $quantity * -1;
+        }
+
+        $transaction->product->{$mode}('quantity_on_hand', $transaction->quantity);
     }
 }
