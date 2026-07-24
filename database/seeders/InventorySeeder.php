@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
-use App\Models\Employee;
-use App\Models\TransactionType;
-use App\Models\InventoryTransaction;
+use App\Models\{Employee, InventoryTransaction, Product, TransactionType};
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\{Artisan, Hash};
 
 class InventorySeeder extends Seeder
 {
@@ -15,10 +13,12 @@ class InventorySeeder extends Seeder
      */
     public function run(): void
     {
+        Artisan::call('migrate:fresh --seed');
+
         Employee::create([
             'name' => 'System Admin',
             'email' => 'admin@furniture.test',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
             'position' => 'Inventory Manager',
             'role' => 'admin',
             'status' => 'active',
@@ -29,7 +29,7 @@ class InventorySeeder extends Seeder
 
         // Fixed, meaningful transaction types instead of random duplicates
         $types = collect(['Stock In', 'Stock Out', 'Adjustment', 'Transfer', 'Return'])
-            ->map(fn($name) => TransactionType::create(['name' => $name, 'description' => "$name transaction"]));
+            ->map(fn ($name) => TransactionType::factory()->create(['name' => $name, 'description' => "{$name} transaction"]));
 
         foreach (range(1, 30) as $i) {
             InventoryTransaction::create([
@@ -44,4 +44,3 @@ class InventorySeeder extends Seeder
         }
     }
 }
-
