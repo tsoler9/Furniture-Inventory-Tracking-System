@@ -44,6 +44,7 @@
                     </span>
                 </td>
                 <td>
+                    <a href="{{ route('products.show', $product) }}" class="btn btn-sm btn-primary">View Details</a>
                     <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-warning">Edit</a>
                     <form action="{{ route('products.destroy', $product) }}" method="POST" class="d-inline"
                           onsubmit="return confirm('Move this product to trash?')">

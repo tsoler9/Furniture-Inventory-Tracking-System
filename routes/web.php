@@ -53,7 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/trashed', [ProductController::class, 'trashed'])->name('products.trashed');
     Route::patch('/products/{product}/restore', [ProductController::class, 'restore'])->name('products.restore')->withTrashed();
     Route::delete('/products/{product}/force-delete', [ProductController::class, 'forceDelete'])->name('products.force-delete')->withTrashed();
-    Route::resource('products', ProductController::class)->except(['show']);
+    Route::resource('products', ProductController::class);
 
     Route::resource('transaction-types', TransactionTypeController::class)->except(['show']);
     Route::resource('inventory-transactions', InventoryTransactionController::class)->except(['show', 'edit', 'update']);

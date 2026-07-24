@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductStoreRequest;
-use App\Http\Requests\ProductUpdateRequest;
+use App\Http\Requests\{ProductStoreRequest, ProductUpdateRequest};
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -15,6 +14,11 @@ class ProductController extends Controller
         $products = Product::latest()->paginate(10);
 
         return view('products.index', compact('products'));
+    }
+
+    public function show(Product $product)
+    {
+        return view('products.show', compact('product'));
     }
 
     public function create(): View
