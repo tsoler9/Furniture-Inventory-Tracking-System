@@ -19,6 +19,7 @@ class TransactionTypeFactory extends Factory
     {
         return [
             'name' => fake()->randomElement(['Stock In', 'Stock Out', 'Adjustment', 'Transfer', 'Return']),
+            'mode' => fake()->randomElement(['addition', 'deduction']),
             'description' => fake()->sentence(),
         ];
     }
