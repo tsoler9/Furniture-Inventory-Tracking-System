@@ -16,6 +16,7 @@ class TransactionTypeUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:100', Rule::unique('transaction_types', 'name')->ignore($this->transaction_type)],
+            'mode' => ['required', 'in:addition,deduction'],
             'description' => ['nullable', 'string', 'max:255'],
         ];
     }

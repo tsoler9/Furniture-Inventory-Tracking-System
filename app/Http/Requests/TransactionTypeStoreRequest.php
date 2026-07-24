@@ -15,6 +15,7 @@ class TransactionTypeStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:100', 'unique:transaction_types,name'],
+            'mode' => ['required', 'in:addition,deduction'],
             'description' => ['nullable', 'string', 'max:255'],
         ];
     }
