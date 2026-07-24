@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class TransactionType extends Model
 {
-    protected $fillable = ['name', 'description'];
+    use HasFactory;
+
+    protected $guarded = [];
 
     public function transactions()
     {
