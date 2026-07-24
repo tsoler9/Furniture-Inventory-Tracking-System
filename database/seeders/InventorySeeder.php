@@ -24,7 +24,7 @@ class InventorySeeder extends Seeder
             'status' => 'active',
         ]);
 
-        $products = Product::factory(10)->create();
+        $products = Product::factory(10)->create(['quantity_on_hand' => 0]);
         $employees = Employee::factory(5)->create();
 
         // Fixed, meaningful transaction types instead of random duplicates
@@ -32,7 +32,7 @@ class InventorySeeder extends Seeder
             ->map(fn ($name) => TransactionType::factory()->create(['name' => $name, 'description' => "{$name} transaction"]));
 
         foreach (range(1, 30) as $i) {
-            InventoryTransaction::create([
+            $transaction = InventoryTransaction::create([
                 'product_id' => $products->random()->id,
                 'employee_id' => $employees->random()->id,
                 'transaction_type_id' => $types->random()->id,
@@ -41,6 +41,8 @@ class InventorySeeder extends Seeder
                 'reference_no' => strtoupper(fake()->bothify('REF-####')),
                 'remarks' => fake()->optional()->sentence(),
             ]);
+
+            $transaction->applyStockChange();
         }
     }
 }

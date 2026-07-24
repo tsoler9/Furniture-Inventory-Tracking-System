@@ -34,7 +34,7 @@ class InventoryTransactionController extends Controller
             DB::transaction(function () use ($request) {
                 $transaction = InventoryTransaction::create($request->validated());
 
-                $this->applyStockChange($transaction);
+                $transaction->applyStockChange($transaction);
 
                 return true;
             });
@@ -49,28 +49,10 @@ class InventoryTransactionController extends Controller
     public function destroy(InventoryTransaction $inventoryTransaction): RedirectResponse
     {
         DB::transaction(function () use ($inventoryTransaction) {
-            $this->applyStockChange($inventoryTransaction, true);
+            $inventoryTransaction->applyStockChange($inventoryTransaction, true);
             $inventoryTransaction->delete();
         });
 
         return redirect()->route('inventory-transactions.index')->with('success', 'Transaction deleted and stock reverted.');
-    }
-
-    /**
-     * Adjusts product stock based on transaction type.
-     * $direction = 1 to apply the change (on create), -1 to reverse it (on delete).
-     * Adjustment/Transfer types are intentionally not auto-applied — out of scope for this project.
-     *
-     * @param mixed $destroy
-     */
-    private function applyStockChange(InventoryTransaction $transaction, $destroy = false): void
-    {
-        if ($destroy) {
-            $mode = ['addition' => 'decrement', 'deduction' => 'increment'][$transaction->transactionType->mode];
-        } else {
-            $mode = ['addition' => 'increment', 'deduction' => 'decrement'][$transaction->transactionType->mode];
-        }
-
-        $transaction->product->{$mode}('quantity_on_hand', $transaction->quantity);
     }
 }
